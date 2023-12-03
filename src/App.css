@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #f7f1f0;
 }
 
 .App-logo {
@@ -27,6 +28,23 @@
 .App-link {
   color: #61dafb;
 }
+
+/* Example CSS */
+.flex {
+  display: flex;
+}
+
+.Navbar {
+  width: 20%; /* Adjust the width as needed */
+  height: 100vh; /* Set height to full viewport height */
+}
+
+.container {
+  width: 80%; /* Adjust the width as needed */
+  /* Add padding or margins if required */
+}
+
+
 
 @keyframes App-logo-spin {
   from {

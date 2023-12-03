@@ -15,7 +15,9 @@ async function login(data) {
     if (response.ok) {
       const result = await response.json(); 
       return result;
-    } 
+    } else{
+      return false;
+    }
   } catch (error) {
     console.error('There was an error with the login:', error);
     return { error: true };

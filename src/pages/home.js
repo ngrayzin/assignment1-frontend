@@ -1,18 +1,28 @@
-import Navbar from '../components/navbar';
+import React, { useEffect, useState } from 'react';
 import Settings from '../settings/settings';
-const settings = new Settings();
+import Navbar from '../components/navbar';
 
 const Home = () => {
-  const userInfo = JSON.parse(settings.user);
+  const settings = new Settings();
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const parsedUserInfo = JSON.parse(settings.user);
+    console.log(parsedUserInfo);
+    setUserInfo(parsedUserInfo);
+  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   return (
-    <div>
-      {/* <Navbar /> */}
-      <div className="container mx-auto mt-8">
-        <h1 className="text-3xl text-black font-bold mb-4">Welcome {userInfo.firstName}</h1>
-        <p className="text-lg text-black mb-4">This is your home page content.</p>
-        {/* You can add more content here */}
-      </div>
+    <div className='flex h-screen'> 
+      {userInfo && (
+        <>
+          <Navbar/>
+          <div className="container mx-auto mt-8">
+            <h1 className="text-3xl text-black font-bold mb-4">Welcome {userInfo.firstName}</h1>
+            <p className="text-lg text-black mb-4">This is your home page content.</p>
+          </div>
+        </>
+      )}
     </div>
   );
 };

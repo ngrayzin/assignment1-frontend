@@ -4,7 +4,9 @@ const settings =  new Settings();
 async function updateUserProfile(data, id){
     const requestOptions = {
         method: "PUT",
-        headers: "Content-Type",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(data),
         redirect: "follow",
     };
