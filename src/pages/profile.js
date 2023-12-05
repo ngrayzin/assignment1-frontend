@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Settings from '../settings/settings';
 
 
-const Profile = () => {
+const Profile = ( ) => {
     const settings = new Settings();
     const [userInfo, setUserInfo] = useState(null);
 
@@ -70,7 +70,7 @@ const Profile = () => {
           <input
             type="text"
             name="firstName"
-            value={userInfo.firstName}
+            value={userInfo?.firstName}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="border rounded-md px-2 py-1 w-64"
@@ -81,7 +81,7 @@ const Profile = () => {
           <input
             type="text"
             name="lastName"
-            value={userInfo.lastName}
+            value={userInfo?.lastName}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="border rounded-md px-2 py-1 w-64"
@@ -92,7 +92,7 @@ const Profile = () => {
           <input
             type="text"
             name="email"
-            value={userInfo.email}
+            value={userInfo?.email}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="border rounded-md px-2 py-1 w-64"
@@ -103,7 +103,7 @@ const Profile = () => {
           <input
             type={isEditing ? "text" : "password"}
             name="password"
-            value={userInfo.password}
+            value={userInfo?.password}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="border rounded-md px-2 py-1 w-64"
@@ -114,21 +114,21 @@ const Profile = () => {
           <input
             type="text"
             name="number"
-            value={userInfo.number}
+            value={userInfo?.number}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="border rounded-md px-2 py-1 w-64"
           />
         </div>
         {/* Add other fields similarly */}
-        {userInfo.isCarOwner ? (
+        {userInfo?.isCarOwner ? (
           <>
             <div className="flex items-center">
               <label className="w-32">Car Plate Number:</label>
               <input
                 type="text"
                 name="carPlateNumber"
-                value={userInfo.carPlateNumber}
+                value={userInfo?.carPlateNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 className="border rounded-md px-2 py-1 w-64"
@@ -139,7 +139,7 @@ const Profile = () => {
               <input
                 type="text"
                 name="driverLicenseNumber"
-                value={userInfo.driverLicenseNumber}
+                value={userInfo?.driverLicenseNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 className="border rounded-md px-2 py-1 w-64"
@@ -155,7 +155,7 @@ const Profile = () => {
               <input
                 type="checkbox"
                 name="hasCar"
-                checked={userInfo.hasCar}
+                checked={userInfo?.isCarOwner}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 className="mx-2"
@@ -169,7 +169,7 @@ const Profile = () => {
           <input
             type="text"
             name="accountCreationDate"
-            value={userInfo.accountCreationDate}
+            value={userInfo?.accountCreationDate}
             onChange={handleInputChange}
             disabled={true}
             className="border rounded-md px-2 py-1 w-64"
@@ -180,7 +180,7 @@ const Profile = () => {
           <input
             type="text"
             name="userID"
-            value={userInfo.userID}
+            value={userInfo?.userID}
             onChange={handleInputChange}
             disabled={true}
             className="border rounded-md px-2 py-1 w-64"
