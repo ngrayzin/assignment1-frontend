@@ -128,7 +128,7 @@ const Profile = ( ) => {
               <input
                 type="text"
                 name="carPlateNumber"
-                value={userInfo?.carPlateNumber}
+                value={userInfo?.carPlateNumber.String}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 className="border rounded-md px-2 py-1 w-64"
@@ -139,7 +139,7 @@ const Profile = ( ) => {
               <input
                 type="text"
                 name="driverLicenseNumber"
-                value={userInfo?.driverLicenseNumber}
+                value={userInfo?.driverLicenseNumber.String}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 className="border rounded-md px-2 py-1 w-64"
