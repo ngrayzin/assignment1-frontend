@@ -48,7 +48,7 @@ function App() {
     <Router>
       <div className='flex h-screen'>
         {/* Sidebar */}
-        {userInfo && <AppSidebar isCarOwner={userInfo.isCarOwner} logout={handleLogout} />}
+        {userInfo && <AppSidebar logout={handleLogout} />}
         {/* Content */}
         <div className="flex-1 h-screen overflow-y-auto ml-12">
           <ToastContainer /> {/* Place the toast container outside the Routes */}

@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sidebar, Menu, MenuItem, sidebarClasses } from 'react-pro-sidebar';
+import Settings from '../settings/settings';
 
-const AppSidebar = ({ isCarOwner, logout}) => {
+const AppSidebar = ({ logout }) => {
+  const settings = new Settings();
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const parsedUserInfo = JSON.parse(settings.user);
+    console.log(parsedUserInfo);
+    setUserInfo(parsedUserInfo);
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('home');
 
@@ -64,7 +74,7 @@ const AppSidebar = ({ isCarOwner, logout}) => {
           Home
         </MenuItem>
 
-        {isCarOwner ? (
+        {userInfo?.isCarOwner ? (
           <>
             <MenuItem 
               icon={<svg class="h-6 w-6 text-black"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />  <polyline points="7 9 12 4 17 9" />  <line x1="12" y1="4" x2="12" y2="16" /></svg>}
