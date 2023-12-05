@@ -3,7 +3,7 @@ import login from "../api/users/login";
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const Login = () => {
+const Login = ({ setLogin }) => {
   const [loginData, setLoginData] = useState({
     email: '',
     pwd: '' 
@@ -24,9 +24,9 @@ const Login = () => {
     try {
       const data = await login(loginData);
       if (data) {
-        sessionStorage.setItem("user", JSON.stringify(data));
         // Redirect to home page or any other page after successful login
         toast.success("Logged In");
+        setLogin(JSON.stringify(data));
         navigate('/home');
       } else{
         toast.error('Login failed. Please check your credentials.'); 

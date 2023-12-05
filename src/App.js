@@ -3,20 +3,62 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
+import Profile from './pages/profile';
 import { ToastContainer } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import AppSidebar from './components/navbar';
 
 function App() {
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    function handleStorageChange(event) {
+      if (event.key === 'user') {
+        const userFromSessionStorage = JSON.parse(event.newValue);
+        setUserInfo(userFromSessionStorage);
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Initial state from sessionStorage on component mount
+    const userFromSessionStorage = JSON.parse(window.sessionStorage.getItem('user'));
+    if (userFromSessionStorage) {
+      setUserInfo(userFromSessionStorage);
+    }
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const handleLoginIn = (loginData) => {
+    sessionStorage.setItem("user", loginData);
+    setUserInfo(loginData);
+  }
+
+  const handleLogout = () => {
+    window.sessionStorage.clear();
+    setUserInfo(null);
+    // Redirect to the login page or perform any other necessary actions after logout
+  };
+
   return (
     <Router>
-      <div>
-        <ToastContainer />
-        <Routes>
-          <Route exact path="/" element={<Login />} /> {/* Set Login as the initial route */}
-          <Route exact path="/home" element={<Home />} /> 
-          <Route exact path="/signup" element={<SignUp />} />
-          {/* Add more routes for other pages */}
-        </Routes>
+      <div className='flex h-screen'>
+        {/* Sidebar */}
+        {userInfo && <AppSidebar isCarOwner={userInfo.isCarOwner} logout={handleLogout} />}
+        {/* Content */}
+        <div className="flex-1 h-screen overflow-y-auto ml-12">
+          <ToastContainer /> {/* Place the toast container outside the Routes */}
+          <Routes>
+            <Route exact path="/" element={<Login setLogin={handleLoginIn}/>} /> Set Login as the initial route
+            <Route exact path="/home" element={<Home />} /> 
+            <Route exact path="/signup" element={<SignUp />} />
+            <Route exact path="/profile" element={<Profile />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

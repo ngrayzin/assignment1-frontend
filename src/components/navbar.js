@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sidebar, Menu, MenuItem, sidebarClasses } from 'react-pro-sidebar';
 
-const AppSidebar = ({ isCarOwner }) => {
+const AppSidebar = ({ isCarOwner, logout}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('home');
 
@@ -19,7 +19,7 @@ const AppSidebar = ({ isCarOwner }) => {
   return (
     <Sidebar 
       collapsed={!isOpen}
-      width='180px'
+      width='185px'
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           backgroundColor: '#fb6d3a',
@@ -117,7 +117,7 @@ const AppSidebar = ({ isCarOwner }) => {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
         </svg>
         }
-          onClick={()=>{sessionStorage.clear();}} 
+          onClick={()=>{logout()}}
           component={<Link to="/" />}
         >
           Logout

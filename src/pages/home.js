@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Settings from '../settings/settings';
-import Navbar from '../components/navbar';
 
-const Home = () => {
+const Home = ( ) => {
   const settings = new Settings();
   const [userInfo, setUserInfo] = useState(null);
 
@@ -16,8 +15,7 @@ const Home = () => {
     <div className='flex h-screen'> 
       {userInfo && (
         <>
-          <Navbar/>
-          <div className="container mx-auto mt-8">
+          <div className="container mx-12 mt-8">
             <h1 className="text-3xl text-black font-bold mb-4">Welcome {userInfo.firstName}</h1>
             <p className="text-lg text-black mb-4">This is your home page content.</p>
           </div>
