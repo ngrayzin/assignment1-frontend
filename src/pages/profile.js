@@ -2,40 +2,44 @@ import React, { useState, useEffect } from 'react';
 import Settings from '../settings/settings';
 import isEqual from 'lodash/isEqual';
 import updateUserProfile from '../api/users/updateUserProfile';
+import deleteUserProfile from '../api/users/deleteUserProfile'
 import { toast } from 'react-toastify';
+import { useNavigate, Link } from 'react-router-dom';
 
 
-const Profile = ({ updateSession }) => {
+const Profile = ({ updateSession, deleteAcc }) => {
     const settings = new Settings();
     const [userInfo, setUserInfo] = useState(null);
     const [normalProfile, setNormalProfile] = useState(null);
     const [initalNormalProfile, setInitalNormalProfile] = useState(null);
     const [carProfile, setCarProfile] = useState(null);
     const [initalCarProfile, setInitalCarProfile] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isCarEditing, setIsCarEditing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-        const parsedUserInfo = JSON.parse(settings.user);;
-        setUserInfo(parsedUserInfo);
-        setNormalProfile({
-          firstName: parsedUserInfo.firstName,
-          lastName: parsedUserInfo.lastName,
-          email: parsedUserInfo.email,
-          password: parsedUserInfo.password,
-          mobileNumber: parsedUserInfo.number,
-        });
-        setInitalNormalProfile({
-          firstName: parsedUserInfo.firstName,
-          lastName: parsedUserInfo.lastName,
-          email: parsedUserInfo.email,
-          password: parsedUserInfo.password,
-          mobileNumber: parsedUserInfo.number,
-        });
-        setCarProfile({isCarOwner: parsedUserInfo.isCarOwner, driverLicenseNumber: parsedUserInfo.driverLicenseNumber, carPlateNumber: parsedUserInfo.carPlateNumber});
-        setInitalCarProfile({isCarOwner: parsedUserInfo.isCarOwner, driverLicenseNumber: parsedUserInfo.driverLicenseNumber, carPlateNumber: parsedUserInfo.carPlateNumber});
-    }, []);
-    
-  const [isEditing, setIsEditing] = useState(false);
-  const [isCarEditing, setIsCarEditing] = useState(false);
+    const navigate = useNavigate();
+
+  useEffect(() => {
+      const parsedUserInfo = JSON.parse(settings.user);;
+      setUserInfo(parsedUserInfo);
+      setNormalProfile({
+        firstName: parsedUserInfo.firstName,
+        lastName: parsedUserInfo.lastName,
+        email: parsedUserInfo.email,
+        password: parsedUserInfo.password,
+        mobileNumber: parsedUserInfo.number,
+      });
+      setInitalNormalProfile({
+        firstName: parsedUserInfo.firstName,
+        lastName: parsedUserInfo.lastName,
+        email: parsedUserInfo.email,
+        password: parsedUserInfo.password,
+        mobileNumber: parsedUserInfo.number,
+      });
+      setCarProfile({isCarOwner: parsedUserInfo.isCarOwner, driverLicenseNumber: parsedUserInfo.driverLicenseNumber, carPlateNumber: parsedUserInfo.carPlateNumber});
+      setInitalCarProfile({isCarOwner: parsedUserInfo.isCarOwner, driverLicenseNumber: parsedUserInfo.driverLicenseNumber, carPlateNumber: parsedUserInfo.carPlateNumber});
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -149,17 +153,64 @@ const Profile = ({ updateSession }) => {
     setCarProfile({isCarOwner: userInfo.isCarOwner, carPlateNumber: userInfo.carPlateNumber, driverLicenseNumber: userInfo.driverLicenseNumber});
     setIsCarEditing(false);
   }
-  const handleDelete = () => {
-    console.log('Account deleted');
+
+  const handleDelete = async () => {
+    const res = await deleteUserProfile(userInfo?.userID);
+
+    if(res.ok){
+      setShowModal(false); 
+      toast.info('Account deleted');
+      deleteAcc();
+      navigate('/');
+    } else if(res.status === 409){
+      setShowModal(false); 
+      toast.info('Account cannot deleted, it is not more than a year');
+      return;
+    }
   };
 
   const isMoreThanAYear = () => {
-    const today = new Date();
-    const creationDate = new Date(normalProfile?.accountCreationDate);
-    const diff = today - creationDate;
-    const diffInYears = diff / (1000 * 3600 * 24 * 365); // Convert diff to years
+    const today = new Date(); // Current date
+    const creationDate = new Date(userInfo?.accountCreationDate); // Convert to Date object
+  
+    // Calculate the difference in milliseconds
+    const diff = today.getTime() - creationDate.getTime();
+  
+    // Calculate the number of milliseconds in a year
+    const millisecondsInAYear = 1000 * 3600 * 24 * 365; // Approximate number of milliseconds in a year
+  
+    return diff >= millisecondsInAYear;
+  };
 
-    return diffInYears >= 1;
+  const DeleteAccountModal = ({ modalCancel }) => {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+        <div className="relative w-auto max-w-md mx-auto my-6">
+          <div className="modal-content bg-white shadow-md rounded-lg text-left px-6 py-4">
+            <h2 className="text-xl font-bold mb-4">Delete Account</h2>
+            <p className="mb-4">Are you sure you want to delete your account?</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={modalCancel}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const modalCancel = () => {
+    setShowModal(false); // Close the modal without deletion
   };
 
   return (
@@ -262,21 +313,15 @@ const Profile = ({ updateSession }) => {
             >
               Edit
             </button>
-            {isMoreThanAYear() ? (
-              <button
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
-              >
-                Delete Account
-              </button>
-            ) : (
-              <button
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
-                disabled
-              >
-                Delete Account
-              </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className={`bg-red-500 text-white px-4 py-2 rounded-md ml-2 ${isMoreThanAYear() ? 'opacity-100 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+              disabled={!isMoreThanAYear()}
+            >
+              Delete Account
+            </button>
+            {showModal && (
+              <DeleteAccountModal modalCancel={modalCancel} />
             )}
           </div>
         )}

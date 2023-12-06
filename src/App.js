@@ -50,7 +50,7 @@ function App() {
             <Route exact path="/" element={<Login setLogin={handleLoginIn}/>} /> Set Login as the initial route
             <Route exact path="/home" element={<Home />} /> 
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/profile" element={<Profile updateSession={handleUpdate}/>} />
+            <Route exact path="/profile" element={<Profile updateSession={handleUpdate} deleteAcc={handleLogout}/>} />
           </Routes>
         </div>
       </div>
