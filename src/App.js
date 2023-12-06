@@ -38,6 +38,11 @@ function App() {
     setUserInfo(loginData);
   }
 
+  const handleUpdate = (updatedData) => {
+    sessionStorage.setItem("user", updatedData);
+    setUserInfo(updatedData);
+  }
+
   const handleLogout = () => {
     window.sessionStorage.clear();
     setUserInfo(null);
@@ -48,7 +53,7 @@ function App() {
     <Router>
       <div className='flex h-screen'>
         {/* Sidebar */}
-        {userInfo && <AppSidebar logout={handleLogout} />}
+        {userInfo && <AppSidebar logout={handleLogout} isCarOwner={userInfo?.isCarOwner}/>}
         {/* Content */}
         <div className="flex-1 h-screen overflow-y-auto ml-12">
           <ToastContainer /> {/* Place the toast container outside the Routes */}
@@ -56,7 +61,7 @@ function App() {
             <Route exact path="/" element={<Login setLogin={handleLoginIn}/>} /> Set Login as the initial route
             <Route exact path="/home" element={<Home />} /> 
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/profile" element={<Profile updateSession={handleUpdate}/>} />
           </Routes>
         </div>
       </div>

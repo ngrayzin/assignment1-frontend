@@ -7,7 +7,6 @@ const Home = ( ) => {
 
   useEffect(() => {
     const parsedUserInfo = JSON.parse(settings.user);
-    console.log(parsedUserInfo);
     setUserInfo(parsedUserInfo);
   }, []); // Empty dependency array ensures this effect runs only once on mount
 

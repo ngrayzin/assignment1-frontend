@@ -24,9 +24,11 @@ const Login = ({ setLogin }) => {
     try {
       const data = await login(loginData);
       if (data) {
+        data.driverLicenseNumber = data.driverLicenseNumber.String
+        data.carPlateNumber = data.carPlateNumber.String
+        setLogin(JSON.stringify(data));
         // Redirect to home page or any other page after successful login
         toast.success("Logged In");
-        setLogin(JSON.stringify(data));
         navigate('/home');
       } else{
         toast.error('Login failed. Please check your credentials.'); 

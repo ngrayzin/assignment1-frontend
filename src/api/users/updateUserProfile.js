@@ -1,4 +1,4 @@
-import Settings from "../../../settings/settings";
+import Settings from "../../settings/settings";
 const settings =  new Settings();
 
 async function updateUserProfile(data, id){
@@ -11,11 +11,11 @@ async function updateUserProfile(data, id){
         redirect: "follow",
     };
     try {
-        const response = await fetch("http://" + settings.userBackend + "/signup/" + id, requestOptions);
+        const response = await fetch("http://" + settings.userBackend + "/userProfile/" + id, requestOptions);
         const result = response;
+        console.log(result);
         
         if (result.ok) {
-          console.log(result)
           return result;
         }
       } catch (error) {

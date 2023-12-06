@@ -1,4 +1,4 @@
-import Settings from "../../../settings/settings";
+import Settings from "../../settings/settings";
 const settings =  new Settings();
 
 async function getUserProfile(id){
