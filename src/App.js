@@ -11,36 +11,25 @@ import AppSidebar from './components/navbar';
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
+  const [carOwner, setCarOwner] = useState(false);
 
   useEffect(() => {
-    function handleStorageChange(event) {
-      if (event.key === 'user') {
-        const userFromSessionStorage = JSON.parse(event.newValue);
-        setUserInfo(userFromSessionStorage);
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange);
-
-    // Initial state from sessionStorage on component mount
-    const userFromSessionStorage = JSON.parse(window.sessionStorage.getItem('user'));
-    if (userFromSessionStorage) {
-      setUserInfo(userFromSessionStorage);
-    }
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    const parsedUserInfo = JSON.parse(sessionStorage.getItem("user"));
+    setUserInfo(parsedUserInfo);
   }, []);
 
   const handleLoginIn = (loginData) => {
     sessionStorage.setItem("user", loginData);
     setUserInfo(loginData);
+    const bool = (JSON.parse(loginData)).isCarOwner;
+    setCarOwner(bool);
   }
 
   const handleUpdate = (updatedData) => {
     sessionStorage.setItem("user", updatedData);
     setUserInfo(updatedData);
+    const bool = (JSON.parse(updatedData)).isCarOwner;
+    setCarOwner(bool);
   }
 
   const handleLogout = () => {
@@ -53,7 +42,7 @@ function App() {
     <Router>
       <div className='flex h-screen'>
         {/* Sidebar */}
-        {userInfo && <AppSidebar logout={handleLogout} isCarOwner={userInfo?.isCarOwner}/>}
+        {userInfo && <AppSidebar logout={handleLogout} user={userInfo}/>}
         {/* Content */}
         <div className="flex-1 h-screen overflow-y-auto ml-12">
           <ToastContainer /> {/* Place the toast container outside the Routes */}

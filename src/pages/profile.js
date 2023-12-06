@@ -85,46 +85,60 @@ const Profile = ({ updateSession }) => {
     setIsEditing(false);
   };
 
+  const handleCarUpdate = async () => {
+    if (!carProfile?.isCarOwner) {
+      const hasEmptyField = Object.values(carProfile).some(value => value === '' || value === null);
+
+      if (hasEmptyField) {
+        toast.error("Please fill out all required fields");
+        return;
+      }
+
+      const res = await updateUserProfile({ ...carProfile, isCarOwner: true }, userInfo?.userID);
+
+      if (res) {
+        setUserInfo(prevInfo => ({
+          ...prevInfo,
+          isCarOwner: true,
+          driverLicenseNumber: carProfile.driverLicenseNumber,
+          carPlateNumber: carProfile.carPlateNumber,
+        }));
+        setCarProfile(prevInfo => ({
+          ...prevInfo,
+          isCarOwner: true
+        }))
+        setIsCarEditing(false); // Exit editing mode after verification
+        updateSession(JSON.stringify(userInfo));
+        toast.success("Verified car profile!");
+      }
+    } else {
+      const hasEmptyField = Object.values(carProfile).some(value => value === '' || value === null);
+
+      if (hasEmptyField) {
+        toast.error("Please fill out all required fields");
+        return;
+      }
+
+      const res = await updateUserProfile(carProfile, userInfo?.userID);
+
+      if (res) {
+        setUserInfo(prevInfo => ({
+          ...prevInfo,
+          isCarOwner: true,
+          driverLicenseNumber: carProfile.driverLicenseNumber,
+          carPlateNumber: carProfile.carPlateNumber,
+        }));
+        toast.success("Updated car profile!");
+        setIsCarEditing(false); // Exit editing mode after update
+      }
+    }
+  };
+
   useEffect(() => {
     if (userInfo) {
       updateSession(JSON.stringify(userInfo));
     }
-  }, [userInfo]);
-
-  const handleCarUpdate = async () => {
-    // Check for empty or null values in carProfile
-    const hasEmptyField = Object.values(carProfile).some(value => value === '' || value === null);
-
-    // Display toast message if an empty field exists when isCarOwner is true
-    if (carProfile.isCarOwner && hasEmptyField) {
-      console.log("Empty field detected"); // Check if this message appears in the console
-      toast.error("Please fill out all required fields");
-      return;
-    }
-  
-    // If carProfile hasn't changed, exit editing mode
-    if (isEqual(carProfile, initalCarProfile)) {
-      setIsCarEditing(false);
-      return;
-    }
-
-    console.log(carProfile);
-  
-    // Perform the update if conditions are met
-    // const res = await updateUserProfile(carProfile, userInfo?.userID);
-  
-    // if (res) {
-    //   setUserInfo((prevInfo) => ({
-    //     ...prevInfo,
-    //     isCarOwner: carProfile.isCarOwner,
-    //     driverLicenseNumber: carProfile.driverLicenseNumber,
-    //     carPlateNumber: carProfile.carPlateNumber
-    //   }));
-    //   toast.success("Updated car profile!");
-    // }
-    setIsCarEditing(false);
-  };
-  
+  }, [userInfo]);  
 
   const handleCancel = () =>{
     setNormalProfile(initalNormalProfile);
@@ -132,7 +146,7 @@ const Profile = ({ updateSession }) => {
   }
 
   const handleCarCancel = () => {
-    setCarProfile(initalCarProfile);
+    setCarProfile({isCarOwner: userInfo.isCarOwner, carPlateNumber: userInfo.carPlateNumber, driverLicenseNumber: userInfo.driverLicenseNumber});
     setIsCarEditing(false);
   }
   const handleDelete = () => {
