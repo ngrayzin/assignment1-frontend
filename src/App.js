@@ -4,6 +4,7 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import Profile from './pages/profile';
+import Trips from './pages/trips';
 import { ToastContainer } from 'react-toastify';
 import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
@@ -51,6 +52,7 @@ function App() {
             <Route exact path="/home" element={<Home />} /> 
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/profile" element={<Profile updateSession={handleUpdate} deleteAcc={handleLogout}/>} />
+            <Route exact path="/trips" element={<Trips />} /> 
           </Routes>
         </div>
       </div>

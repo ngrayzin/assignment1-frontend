@@ -215,7 +215,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
 
   return (
     <div className="max-w-3xl mx-auto p-4">
-      <div className="bg-gray-200 p-8 rounded shadow-md">
+      <div className="bg-white p-8 rounded shadow-md">
         <h1 className="text-3xl font-bold mb-4">Profile</h1>
         <div className="space-y-4">
           <div className="flex items-center">
@@ -296,6 +296,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
             />
           </div>
         </div>
+        <br/>
         {isEditing ? (
           <div className="flex">
             <button type="submit" onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
@@ -326,7 +327,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
           </div>
         )}
       </div>
-      <div className="bg-gray-200 p-8 rounded shadow-md mt-12">
+      <div className="bg-white p-8 rounded shadow-md mt-12">
         {carProfile?.isCarOwner ? (
         <>
           <h2 className="text-3xl font-bold mb-4">Car Info</h2>
@@ -354,6 +355,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
               className="border rounded-md px-2 py-1 w-64"
             />
           </div>
+          <br/>
           {isCarEditing ? (
           <div className="flex">
             <button type="submit" onClick={handleCarUpdate} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
@@ -388,6 +390,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
                   className="border rounded-md px-2 py-1 w-64"
                 />
               </div>
+              <br/>
               <div className="flex items-center">
                 <label className="w-35 pr-3">Driver License Number:</label>
                 <input
@@ -398,6 +401,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
                   className="border rounded-md px-2 py-1 w-64"
                 />
               </div>
+              <br/>
               <button onClick={handleCarUpdate} className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
                 Verify
             </button>

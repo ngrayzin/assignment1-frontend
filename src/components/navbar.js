@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sidebar, Menu, MenuItem, sidebarClasses } from 'react-pro-sidebar';
-import Settings from '../settings/settings';
 
 const AppSidebar = ({ logout, user }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -12,7 +11,7 @@ const AppSidebar = ({ logout, user }) => {
         const parsedUserInfo = JSON.parse(user);
         setUserInfo(parsedUserInfo);
       } catch (error) {
-        console.error("Error parsing user data:", error);
+        // console.error("Error parsing user data:", error);
         // Handle the error or set a default value for userInfo
       }
     }
