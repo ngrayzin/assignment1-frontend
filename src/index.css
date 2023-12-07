@@ -21,40 +21,37 @@ code {
 }
 
 .timeline {
-  position: relative;
   display: flex;
   align-items: center;
-  padding: 2px 0;
-  background-color: #f2f2f2; /* Grey background */
-  height: 4px; /* Thinner line */
-  border-radius: 80px; /* Rounder edges */
-  width: 100%; /* Cover 80% of the width */
-  margin: auto; /* Center the timeline */
-  left:0
+  width: 100%;
 }
 
-/* Style the start point */
-.start-point,
-.end-point {
-  width: 4px; /* Adjust circle size */
-  height: 4px; /* Adjust circle size */
-  border-radius: 50%;
-  background-color: #3182ce; /* Blue circles */
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  padding: 0px; /* Padding for circles */
-  box-sizing: content-box; /* Include padding in width and height */
+.point {
+  display: flex;
+  align-items: center;
 }
 
-/* Position the start point */
+.timeline-line {
+  flex-grow: 1;
+  border-top: 2px solid #333;
+  margin: 0 10px;
+}
+
+.point-text {
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #0a74fd;
+  color:white;
+  box-shadow: 0 1px 3px rgba(1, 1, 0.1, 0.1);
+  border-color: black;
+}
+
 .start-point {
-  left: 0;
+  order: -1;
 }
 
-/* Position the end point */
-.end-point {
-  right: 0;
+.timeline-line {
+  text-align: center;
 }
 
