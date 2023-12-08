@@ -192,6 +192,13 @@ const PublishTrips = () => {
         return [formattedDate, formattedTime];
     };
 
+    function isThirtyMinutesBeforeOrLater(givenTime) {
+        const thirtyMinutesBefore = new Date(new Date().getTime() + 30 * 60000); // 30 minutes in milliseconds
+        const targetTime = new Date(givenTime);
+        
+        return new Date() >= thirtyMinutesBefore && new Date() <= targetTime;
+    }
+
     return (
         <div className="container mx-10 mt-8">
             <div className='flex items-center mb-12'>
@@ -203,7 +210,7 @@ const PublishTrips = () => {
                 </svg>
                 <div>
                     <h3 className="text-3xl font-bold mb-1" style={{color: '#0a74fd'}}>Published Trips</h3>
-                    <h3 className="text-sm text-gray-500 font-semibold">Find all of your listing here</h3>
+                    <h3 className="text-sm text-gray-500 font-semibold">Find all of your listings here</h3>
                 </div>
             </div>
             <div className="space-y-4">
@@ -242,51 +249,85 @@ const PublishTrips = () => {
                                 </div>
                             </div>
                             <div className='flex items-center mb-1 mt-2'>
-                                {trip.isStarted ? ( //calculation for 30min
-                                    <button
-                                        className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
-                                        disabled
-                                    >
-                                        Waiting
-                                    </button>
+                                {trip.tripEndTime.String === "" ? ( 
+                                    <>
+                                        {trip.isStarted ? ( 
+                                            <button
+                                                className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                                disabled
+                                            >
+                                                Trip Ongoing
+                                            </button>
+                                            ) : (
+                                                <>
+                                                {isThirtyMinutesBeforeOrLater(trip.startTravelTime) ? ( //calculation for 30min
+                                                    <button
+                                                        onClick={() => handleStartOpenModal(index)}
+                                                        className="bg-transparent hover:bg-green-600 text-green-600 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
+                                                        >
+                                                        Start this trip
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                                        disabled
+                                                    >
+                                                        Too soon to start
+                                                    </button>
+                                                )}
+                                            </>  
+                                        )}
+                                        {trip.isCancelled ? ( //calculation for 30min
+                                            <button
+                                                className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                                disabled
+                                            >
+                                                Cancel this trip
+                                            </button>
+                                            ) : (
+                                                <>
+                                                    {isThirtyMinutesBeforeOrLater(trip.startTravelTime) ? ( //calculation for 30min
+                                                        <button
+                                                            onClick={() => handleCancelOpenModal(index)}
+                                                            className="ml-auto items-end bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
+                                                            >
+                                                            Cancel this trip
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                                            disabled
+                                                        >
+                                                            Too soon to cancel
+                                                        </button>
+                                                    )}
+                                                </>                                     
+                                        )}
+                                        {!trip.isStarted && trip.tripEndTime.String === "" ? ( //calculation for 30min
+                                            <button
+                                                className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                            >
+                                                End this trip
+                                            </button>
+                                            ) : (
+                                            <button
+                                                onClick={() => handleEndOpenModal(index)}
+                                                className="ml-auto items-end bg-transparent hover:bg-orange-500 text-orange-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
+                                            >
+                                                End this trip
+                                            </button>
+                                        )}
+                                    </>
                                     ) : (
-                                    <button
-                                        onClick={() => handleStartOpenModal(index)}
-                                        className="bg-transparent hover:bg-green-600 text-green-600 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
-                                    >
-                                        Start the trip
-                                    </button>
+                                    <div className="w-full">
+                                        <button
+                                            className="w-full bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                        >
+                                            Trip Ended
+                                        </button>
+                                    </div>
                                 )}
-                                {trip.isCancelled ? ( //calculation for 30min
-                                    <button
-                                        className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
-                                        disabled
-                                    >
-                                        Cancel this trip
-                                    </button>
-                                    ) : (
-                                    <button
-                                        onClick={() => handleCancelOpenModal(index)}
-                                        className="ml-auto items-end bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
-                                    >
-                                        Cancel this trip
-                                    </button>
-                                )}
-                                {!trip.isStarted && trip.TripEndTime !== "" ? ( //calculation for 30min
-                                    <button
-                                        className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
-                                    >
-                                        End this trip
-                                    </button>
-                                    ) : (
-                                    <button
-                                        onClick={() => handleEndOpenModal(index)}
-                                        className="ml-auto items-end bg-transparent hover:bg-orange-500 text-orange-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
-                                        disabled
-                                    >
-                                        End this trip
-                                    </button>
-                                )}
+                                
                             </div>
                             <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
                             {/* Other trip details */}
