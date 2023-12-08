@@ -11,15 +11,15 @@ const Trips = () => {
     const [openModalIndex, setOpenModalIndex] = useState(null);
     const [selectedSeats, setSelectedSeats] = useState(1);
 
-    // Assume you fetch the list of trips from an API or a data source
     useEffect(() => {
-        const fetchData = async () => {
+        const parsedUserInfo = JSON.parse(settings.user);;
+        setUserInfo(parsedUserInfo);
+        const fetchData = async (id) => {
         try {
-    
-            const fetchTrips = await getTrips();
+            const fetchTrips = await getTrips(id);
             if (fetchTrips) {
                 console.log(fetchTrips);
-            setTrips(fetchTrips);
+                setTrips(fetchTrips);
             }
         } catch (error) {
             // Handle error if any
@@ -27,9 +27,9 @@ const Trips = () => {
         }
         };
 
-        const parsedUserInfo = JSON.parse(settings.user);
-        setUserInfo(parsedUserInfo);
-        fetchData(); // Call the async function to fetch data
+        if(parsedUserInfo && parsedUserInfo?.userID > 0){
+            fetchData(parsedUserInfo?.userID); // Call the async function to fetch data}
+        }
     }, []);  
 
     const handleConfirmEnrollment = async (tripID) => {
@@ -39,7 +39,7 @@ const Trips = () => {
         const res = await enrollTrip(data, tripID, userInfo?.userID);
         if(res.ok){
             toast.success("Enrolled into trip")
-            const updatedTrips = await getTrips();
+            const updatedTrips = await getTrips(userInfo?.userID);
             setTrips(updatedTrips);
         }
         else if(res.status === 409){
@@ -92,18 +92,21 @@ const Trips = () => {
         );
     };
     const formatDateTime = (stringDate) => {
-        const timeOptions = {
-            day: '2-digit',
-            month: '2-digit',
+        const date = new Date(stringDate);
+        const options = {
             year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
             hour: '2-digit',
             minute: '2-digit',
+            hour12: false,
+            timeZone: 'UTC', // Set the desired time zone here
         };
-        const date = new Date(stringDate);
-        const formattedDateTime = date.toLocaleDateString('en-GB', timeOptions);
+    
+        const formattedDateTime = new Intl.DateTimeFormat('en-GB', options).format(date);
         const [formattedDate, formattedTime] = formattedDateTime.split(', ');
         return [formattedDate, formattedTime];
-    }
+    };
     const filteredTrips = trips.filter(trip => trip.pickupLoc || trip.altPickupLoc.String || trip.destinationAddress);
     const uniquePickupLocations = getUniqueLocations(filteredTrips, 'pickupLoc');
     const uniqueAltPickupLocations = getUniqueLocations(filteredTrips, 'altPickupLoc');
@@ -142,7 +145,7 @@ const Trips = () => {
             </div>
           </div>
         );
-      };
+    };
 
     return (
         <div className="container mx-10 mt-8">
@@ -159,11 +162,11 @@ const Trips = () => {
                 </div>
             </div>
             <div className="w-full">
-            <input
-                type="text"
-                placeholder="Search..."
-                className="w-1000 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-1000 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                />
             </div>
             <br></br>
             <div className="flex space-x-2 mb-4">
@@ -174,7 +177,9 @@ const Trips = () => {
             </div>
             <div className="space-y-4">
                 {Array.isArray(trips) && trips.length > 0 ? (
-                    trips.map((trip, index) => (
+                    trips
+                    .filter(trip => trip.isActive && trip.availableSeats > 0)
+                    .map((trip, index) => (
                         <div key={trip.tripID} className="bg-white p-4 rounded-xl shadow-sm w-full">
                             <div className='flex items-center mb-1'>
                                 <svg className="h-7 w-7 text-black mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -213,9 +218,23 @@ const Trips = () => {
                                     <circle cx="12" cy="7" r="4" />
                                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                                     </svg>
-                                    <h2 className="text-md font-bold">User {trip.ownerUserID}</h2>
+                                    <h2 className="text-md font-bold">{trip.firstName + " " + trip.lastName}</h2>
                                 </div>
-                                <button onClick={() => handleOpenModal(index)} className="ml-auto items-end bg-transparent hover:bg-orange-500 text-orange-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full">Enroll for this trip</button>
+                                {trip.isEnrolled ? (
+                                    <button
+                                        className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
+                                        disabled
+                                    >
+                                        Enrolled
+                                    </button>
+                                    ) : (
+                                    <button
+                                        onClick={() => handleOpenModal(index)}
+                                        className="ml-auto items-end bg-transparent hover:bg-orange-500 text-orange-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
+                                    >
+                                        Enroll for this trip
+                                    </button>
+                                )}
                             </div>
                             <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
                             {/* Other trip details */}

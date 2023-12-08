@@ -5,6 +5,9 @@ import Login from './pages/login';
 import SignUp from './pages/signup';
 import Profile from './pages/profile';
 import Trips from './pages/trips';
+import PublishTripPage from './pages/postTrips';
+import MyEnrollmentsPage from './pages/enrollments';
+import PublishTrips from './pages/publishedTrips';
 import { ToastContainer } from 'react-toastify';
 import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,6 +56,9 @@ function App() {
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/profile" element={<Profile updateSession={handleUpdate} deleteAcc={handleLogout}/>} />
             <Route exact path="/trips" element={<Trips />} /> 
+            <Route exact path="/post-trips" element={<PublishTripPage />} /> 
+            <Route exact path="/enrollments" element={<MyEnrollmentsPage />} /> 
+            <Route exact path="/current-trips" element={<PublishTrips />} /> 
           </Routes>
         </div>
       </div>

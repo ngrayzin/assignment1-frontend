@@ -1,13 +1,13 @@
 import Settings from "../../settings/settings";
 const settings =  new Settings();
 
-async function getTrips(id){
+async function getPublishedTrips(id){
     const requestOptions = {
         method: "GET",
         redirect: "follow",
     };
     try {
-        const response = await fetch("http://" + settings.tripsBackend + "/trips/" + id, requestOptions);
+        const response = await fetch("http://" + settings.tripsBackend + "/publishTrip/" + id, requestOptions);
         
         if (response.ok) {
             const result = await response.json(); 
@@ -21,4 +21,4 @@ async function getTrips(id){
         return { error: true };
       } 
 }
-export default getTrips;
+export default getPublishedTrips;
