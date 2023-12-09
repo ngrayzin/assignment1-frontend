@@ -11,7 +11,7 @@ async function updatePublishTrip(data, id){
         redirect: "follow",
     };
     try {
-        const response = await fetch("http://" + settings.userBackend + "/userProfile/" + id, requestOptions);
+        const response = await fetch("http://" + settings.tripsBackend + "/publishTrip/" + id, requestOptions);
         return response;
       } catch (error) {
         // RETURN ERROR
