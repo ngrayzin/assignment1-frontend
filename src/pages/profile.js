@@ -83,7 +83,6 @@ const Profile = ({ updateSession, deleteAcc }) => {
         password: normalProfile.password,
         number: normalProfile.mobileNumber,
       }));
-      console.log(userInfo);
       toast.success("Updated profile!");
     }
     setIsEditing(false);

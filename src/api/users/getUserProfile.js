@@ -11,7 +11,6 @@ async function getUserProfile(id){
         const result = await response.json();
         
         if (result) {
-          console.log(result)
           return result;
         }
       } catch (error) {

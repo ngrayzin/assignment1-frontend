@@ -13,7 +13,6 @@ async function updateUserProfile(data, id){
     try {
         const response = await fetch("http://" + settings.userBackend + "/userProfile/" + id, requestOptions);
         const result = response;
-        console.log(result);
         
         if (result.ok) {
           return result;

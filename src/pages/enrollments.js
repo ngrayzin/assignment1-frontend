@@ -14,7 +14,6 @@ const MyEnrollmentsPage = ({}) => {
         try {
             const fetchTrips = await getEnrolledTrips(id);
             if (fetchTrips) {
-                console.log(fetchTrips);
                 setTrips(fetchTrips);
             }
         } catch (error) {

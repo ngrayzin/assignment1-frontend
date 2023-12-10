@@ -10,7 +10,6 @@ async function getUserProfile(id){
         const response = await fetch("http://" + settings.userBackend + "/userProfile/" + id, requestOptions);
         
         if (response) {
-          console.log(response)
           return response;
         }
       } catch (error) {

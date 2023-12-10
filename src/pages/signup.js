@@ -31,7 +31,6 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle sign-up logic with signUpData
-    console.log('Sign-up data:', signUpData);
     // Perform API call or other actions
     const res =  await signup(signUpData);
     if(res.ok){

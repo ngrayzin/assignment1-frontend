@@ -19,7 +19,6 @@ const PublishTrips = () => {
         try {
             const fetchTrips = await getPublishedTrips(id);
             if (fetchTrips) {
-                console.log(fetchTrips);
                 setTrips(fetchTrips);
             }
         } catch (error) {
@@ -199,27 +198,54 @@ const PublishTrips = () => {
         return [formattedDate, formattedTime];
     };
 
-    function isThirtyMinutesBeforeOrLater(givenTime) {
-        const currentTime = new Date(); // Current time in local timezone
-        const currentUTCTime = new Date(
-            Date.UTC(
-                currentTime.getUTCFullYear(),
-                currentTime.getUTCMonth(),
-                currentTime.getUTCDate(),
-                currentTime.getUTCHours(),
-                currentTime.getUTCMinutes(),
-                currentTime.getUTCSeconds()
-            )
-        ); // Current time in UTC
+    const parseDateTime = (formattedDateTimeString) => {
+        const [datePart, timePart] = formattedDateTimeString.split(', '); // Splitting date and time
+        const [day, month, year] = datePart.split('/').map(Number); // Extracting date components
+        const [hours, minutes] = timePart.split(':').map(Number); // Extracting time components
     
-        const givenDateTime = new Date(givenTime); // Given time in UTC
-    
-        const thirtyMinutesBefore = new Date(givenDateTime.getTime() - 30 * 60000); // 30 minutes before given time in UTC
-    
-        // Check if the date and time of the given time is before the current date and time
-        const isPastDateTime = givenDateTime.getTime() <= currentUTCTime.getTime();
-    
-        return isPastDateTime || currentUTCTime >= thirtyMinutesBefore;
+        // Creating the Date object manually with the specified format
+        return new Date(year, month - 1, day, hours, minutes); // Months are zero-based in JavaScript Dates (January is 0)
+    };
+
+    const isThirtyMinutes = (stringDate) => {
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'Asia/Singapore', // Set the desired time zone here
+        };
+
+        const options1 = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'UTC', // Set the desired time zone here
+        };
+
+
+        const date = new Date(stringDate);
+        const currentDate = new Date();
+        const formattedDateTime = new Intl.DateTimeFormat('en-GB', options1).format(date);
+        const formattedDateTime1 = new Intl.DateTimeFormat('en-SG', options).format(currentDate);
+
+        const dateObj = parseDateTime(formattedDateTime);
+        const currentDateObj = parseDateTime(formattedDateTime1);
+
+        const differenceInMinutes = (currentDateObj - dateObj) / (1000 * 60);
+
+        if(differenceInMinutes >= -30){
+            return true;
+        } else if(differenceInMinutes >= 0){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     return (
@@ -293,7 +319,7 @@ const PublishTrips = () => {
                                                         </button>
                                                         ) : (
                                                             <>
-                                                            {isThirtyMinutesBeforeOrLater(trip.startTravelTime) ? ( //calculation for 30min
+                                                            {isThirtyMinutes(trip.startTravelTime) ? ( //calculation for 30min
                                                                 <button
                                                                     onClick={() => handleStartOpenModal(index)}
                                                                     className="bg-transparent hover:bg-green-600 text-green-600 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
@@ -310,7 +336,7 @@ const PublishTrips = () => {
                                                             )}
                                                         </>  
                                                     )}
-                                                    {trip.isStarted ? ( //calculation for 30min
+                                                    {trip.isStarted ? ( 
                                                         <button
                                                             className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
                                                             disabled
@@ -319,7 +345,7 @@ const PublishTrips = () => {
                                                         </button>
                                                         ) : (
                                                             <>
-                                                                {isThirtyMinutesBeforeOrLater(trip.startTravelTime) ? ( //calculation for 30min
+                                                                {isThirtyMinutes(trip.startTravelTime) ? ( //calculation for 30min
                                                                     <button
                                                                         onClick={() => handleCancelOpenModal(index)}
                                                                         className="ml-auto items-end bg-transparent hover:bg-red-500 text-red-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded-full"
@@ -336,7 +362,7 @@ const PublishTrips = () => {
                                                                 )}
                                                             </>                                     
                                                     )}
-                                                    {!trip.isStarted && trip.tripEndTime.String === "" ? ( //calculation for 30min
+                                                    {!trip.isStarted && trip.tripEndTime.String === "" ? ( 
                                                         <button
                                                             className="ml-auto items-end bg-gray-300 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-full cursor-not-allowed"
                                                         >
