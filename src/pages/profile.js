@@ -83,13 +83,6 @@ const Profile = ({ updateSession, deleteAcc }) => {
         password: normalProfile.password,
         number: normalProfile.mobileNumber,
       }));
-      setInitalNormalProfile({
-        firstName: userInfo?.firstName,
-        lastName: userInfo?.lastName,
-        email: userInfo?.email,
-        password: userInfo?.password,
-        mobileNumber: userInfo?.number,
-      });
       toast.success("Updated profile!");
     }
     setIsEditing(false);
@@ -151,7 +144,14 @@ const Profile = ({ updateSession, deleteAcc }) => {
   }, [userInfo]);  
 
   const handleCancel = () =>{
-    setNormalProfile(initalNormalProfile);
+    //setNormalProfile(initalNormalProfile);
+    setNormalProfile({
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+      password: userInfo.password,
+      mobileNumber: userInfo.number,
+    });
     setIsEditing(false);
   }
 
