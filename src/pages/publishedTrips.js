@@ -391,7 +391,7 @@ const PublishTrips = () => {
                                 )}
                                 
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                             {/* Other trip details */}
                             <StartModal 
                                 key={`start-modal-${index}`} // Ensure each modal has a unique key

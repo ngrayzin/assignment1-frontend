@@ -107,7 +107,7 @@ const MyEnrollmentsPage = ({}) => {
                                     DRIVING TO DESTINATION...
                                 </button>
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                         </div>
                         ))}
                     </>
@@ -121,6 +121,7 @@ const MyEnrollmentsPage = ({}) => {
                 {Array.isArray(trips) && trips.length > 0 ? (
                     trips
                     .filter((trip) => !trip.isStarted)
+                    .reverse()
                     .map((trip, index) => (
                         <div key={trip.tripID} className="bg-white p-4 rounded-xl shadow-sm w-full">
                             <div className='flex items-center mb-1'>
@@ -169,7 +170,7 @@ const MyEnrollmentsPage = ({}) => {
                                     Waiting for trip to start...
                                 </button>
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                         </div>
                     ))
                 ) : (
@@ -227,7 +228,7 @@ const MyEnrollmentsPage = ({}) => {
                                     Cancelled
                                 </button>
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                         </div>
                     ))
                 ) : (
@@ -285,7 +286,7 @@ const MyEnrollmentsPage = ({}) => {
                                     Trip Ended
                                 </button>
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                         </div>
                     ))
                 ) : (

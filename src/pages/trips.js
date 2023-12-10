@@ -235,7 +235,7 @@ const Trips = () => {
                                     </button>
                                 )}
                             </div>
-                            <p>{trip.isActive ? 'Active' : 'Inactive'}</p>
+                            {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                             {/* Other trip details */}
                             <Modal 
                                 key={`modal-${index}`} // Ensure each modal has a unique key
