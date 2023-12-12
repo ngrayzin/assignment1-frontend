@@ -170,7 +170,11 @@ const Profile = ({ updateSession, deleteAcc }) => {
       navigate('/');
     } else if(res.status === 409){
       setShowModal(false); 
-      toast.info('Account cannot deleted, it is not more than a year');
+      toast.info('Account cannot be deleted, it is not more than a year!');
+      return;
+    } else{
+      setShowModal(false); 
+      toast.info('Account cannot be deleted, complete all your trip first!');
       return;
     }
   };
