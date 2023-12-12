@@ -44,6 +44,9 @@ const Trips = () => {
         else if(res.status === 409){
             toast.error("Enrollment Conflict! You have a current trip that is either 30 minutes before or after this enrolled trip");
         }
+        else {
+            toast.error("Something went wrong");
+        }
     };
 
     const handleOpenModal = (index) => {
