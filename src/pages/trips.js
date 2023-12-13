@@ -159,7 +159,7 @@ const Trips = () => {
             <div className="space-y-4">
                 {Array.isArray(trips) && trips.length > 0 ? (
                     trips
-                    .filter(trip => trip.isActive && !(trip.isStarted) && !(trip.isCancelled) && trip.availableSeats > 0)
+                    .filter(trip => trip.isActive && !trip.isStarted && !trip.isCancelled && trip.availableSeats > 0)
                     .map((trip, index) => (
                         <div key={trip.tripID} className="bg-white p-4 rounded-xl shadow-sm w-full">
                             <div className='flex items-center mb-1'>
