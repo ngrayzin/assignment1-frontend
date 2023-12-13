@@ -120,7 +120,7 @@ const MyEnrollmentsPage = ({}) => {
                 <h3 className="text-xl font-bold mb-1 text-orange-500" >My Enrollments</h3>
                 {Array.isArray(trips) && trips.length > 0 ? (
                     trips
-                    .filter((trip) => !trip.isStarted)
+                    .filter((trip) => !trip.isStarted && !trip.isCancelled)
                     .reverse()
                     .map((trip, index) => (
                         <div key={trip.tripID} className="bg-white p-4 rounded-xl shadow-sm w-full">
