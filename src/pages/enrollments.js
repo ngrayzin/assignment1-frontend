@@ -113,7 +113,6 @@ const MyEnrollmentsPage = ({}) => {
                     </>
                 ) : (
                     <div>
-                        <h1>fww</h1>
                         <p>No ride available</p>
                     </div>
                 )}

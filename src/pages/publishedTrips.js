@@ -249,7 +249,7 @@ const PublishTrips = () => {
     }
 
     return (
-        <div className="container mx-10 mt-8">
+        <div className="container mx-10 mt-8 mb-4">
             <div className='flex items-center mb-12'>
                 <svg className="h-16 w-16 text-black mr-4" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z"/>
@@ -280,7 +280,7 @@ const PublishTrips = () => {
                                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                     <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                                     </svg>
-                                    <h2 className="text-md font-bold">Available Seats: {trip.availableSeats}</h2>
+                                    <h2 className="text-md font-bold">Seats Left: {trip.availableSeats}</h2>
                                 </div>
                             </div>
                             <p className='text-lg font-bold mb-6'>{formatDateTime(trip.startTravelTime)[0]}</p>
@@ -389,7 +389,7 @@ const PublishTrips = () => {
                                         </button>
                                     </div>
                                 )}
-                                
+                                <br></br>
                             </div>
                             {/* <p>{trip.isActive ? 'Active' : 'Inactive'}</p> */}
                             {/* Other trip details */}

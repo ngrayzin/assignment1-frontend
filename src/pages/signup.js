@@ -38,6 +38,8 @@ const SignUp = () => {
         navigate('/');
     } else if(res.status === 409){
         toast.error("Email taken, please use another one.");
+    } else{
+      toast.error("Invalid parameters");
     }
   };
 
