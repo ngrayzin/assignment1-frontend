@@ -99,7 +99,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
 
       const res = await updateUserProfile({ ...carProfile, isCarOwner: true }, userInfo?.userID);
 
-      if (res) {
+      if (res.ok) {
         setUserInfo(prevInfo => ({
           ...prevInfo,
           isCarOwner: true,
@@ -113,6 +113,8 @@ const Profile = ({ updateSession, deleteAcc }) => {
         setIsCarEditing(false); // Exit editing mode after verification
         updateSession(JSON.stringify(userInfo));
         toast.success("Verified car profile!");
+      } else{
+        toast.error("You have uncompleted trips, please complete them before verifying!");
       }
     } else {
       const hasEmptyField = Object.values(carProfile).some(value => value === '' || value === null);
@@ -124,7 +126,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
 
       const res = await updateUserProfile(carProfile, userInfo?.userID);
 
-      if (res) {
+      if (res.ok) {
         setUserInfo(prevInfo => ({
           ...prevInfo,
           isCarOwner: true,
@@ -133,8 +135,10 @@ const Profile = ({ updateSession, deleteAcc }) => {
         }));
         toast.success("Updated car profile!");
         setIsCarEditing(false); // Exit editing mode after update
+      } else{
+        toast.error("Something went wrong");
       }
-    }
+    } 
   };
 
   useEffect(() => {

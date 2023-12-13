@@ -429,7 +429,7 @@ const PublishTrips = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No ride available</p>
+                    <p>No ride made</p>
                 )}
             </div>
         </div>

@@ -65,17 +65,6 @@ const Trips = () => {
         }
     };
 
-    const getUniqueLocations = (trips, locationType) => {
-        const locations = trips.reduce((acc, trip) => {
-        const location = trip[locationType];
-        if (typeof location === 'string' && location.trim() !== '' && !acc.includes(location.trim())) {
-            acc.push(location.trim());
-        }
-        return acc;
-        }, []);
-        return locations;
-    };
-    
     const getMinMaxSeats = (trips) => {
         const seats = trips.map((trip) => trip.availableSeats);
         return {
@@ -84,15 +73,6 @@ const Trips = () => {
         };
     };
 
-    const LocationDropdown = ({ locations }) => {
-        return (
-        <select className="bg-gray-200 rounded-md px-3 py-1">
-            {locations.map((location, index) => (
-            <option key={index} value={location}>{location}</option>
-            ))}
-        </select>
-        );
-    };
     const formatDateTime = (stringDate) => {
         const date = new Date(stringDate);
         const options = {
@@ -109,11 +89,15 @@ const Trips = () => {
         const [formattedDate, formattedTime] = formattedDateTime.split(', ');
         return [formattedDate, formattedTime];
     };
+
     const filteredTrips = trips.filter(trip => trip.pickupLoc || trip.altPickupLoc.String || trip.destinationAddress);
-    const uniquePickupLocations = getUniqueLocations(filteredTrips, 'pickupLoc');
-    const uniqueAltPickupLocations = getUniqueLocations(filteredTrips, 'altPickupLoc');
-    const uniqueDestinationLocations = getUniqueLocations(filteredTrips, 'destinationAddress');
     const { minSeats, maxSeats } = getMinMaxSeats(filteredTrips);
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
     const Modal = ({ isOpen, onClose, onConfirm, maxSeats, tripID, pickupLoc, altPickupLoc, destinationAddress }) => {
 
@@ -164,19 +148,14 @@ const Trips = () => {
                 </div>
             </div>
             <div className="w-full">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-1000 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                />
+            <input
+                type="text"
+                placeholder="Search..."
+                className="w-1000 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                onKeyUp={handleSearch}
+            />
             </div>
             <br></br>
-            <div className="flex space-x-2 mb-4">
-                {/* Other filters */}
-                <LocationDropdown locations={uniquePickupLocations} />
-                <LocationDropdown locations={uniqueAltPickupLocations} />
-                <LocationDropdown locations={uniqueDestinationLocations} />
-            </div>
             <div className="space-y-4">
                 {Array.isArray(trips) && trips.length > 0 ? (
                     trips

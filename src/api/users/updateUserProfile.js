@@ -12,11 +12,7 @@ async function updateUserProfile(data, id){
     };
     try {
         const response = await fetch("http://" + settings.userBackend + "/userProfile/" + id, requestOptions);
-        const result = response;
-        
-        if (result.ok) {
-          return result;
-        }
+        return response;
       } catch (error) {
         // RETURN ERROR
         console.log(error);
