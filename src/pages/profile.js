@@ -73,7 +73,7 @@ const Profile = ({ updateSession, deleteAcc }) => {
   
     const res = await updateUserProfile(normalProfile, userInfo?.userID);
 
-    if (res) {
+    if (res.ok) {
       // Update userInfo state
       setUserInfo((prevInfo) => ({
         ...prevInfo,
@@ -84,8 +84,10 @@ const Profile = ({ updateSession, deleteAcc }) => {
         number: normalProfile.mobileNumber,
       }));
       toast.success("Updated profile!");
+      setIsEditing(false);
+    } else{
+      toast.error("Email taken! Use another email!");
     }
-    setIsEditing(false);
   };
 
   const handleCarUpdate = async () => {
